@@ -1,0 +1,44 @@
+# Environment variables
+.env
+.env.local
+
+# API keys and secrets (never commit these!)
+*_api_key.txt
+secrets.json
+config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Reports
+reports/*.html
+remediation_response.json
+
+# Test files
+test_output.json
+

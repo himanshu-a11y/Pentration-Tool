@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetration Testing Suite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shield-alt"></i> Penetration Testing Suite</h1>
+            <p class="subtitle">Comprehensive Web Application Security Scanner</p>
+        </header>
+
+        <main>
+            <!-- Scan Configuration Form -->
+            <section class="card" id="scan-form-section">
+                <h2><i class="fas fa-cog"></i> New Scan Configuration</h2>
+                <form id="scan-form">
+                    <div class="form-group">
+                        <label for="target_url">
+                            <i class="fas fa-globe"></i> Target URL
+                        </label>
+                        <input type="text" id="target_url" name="target_url" 
+                               placeholder="http://example.com or https://example.com" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="crawl_depth">
+                                <i class="fas fa-sitemap"></i> Crawl Depth
+                            </label>
+                            <input type="number" id="crawl_depth" name="crawl_depth" 
+                                   value="2" min="1" max="5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start_port">
+                                <i class="fas fa-network-wired"></i> Start Port
+                            </label>
+                            <input type="number" id="start_port" name="start_port" 
+                                   value="1" min="1" max="65535" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end_port">
+                                <i class="fas fa-network-wired"></i> End Port
+                            </label>
+                            <input type="number" id="end_port" name="end_port" 
+                                   value="1024" min="1" max="65535" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="run_poc" name="run_poc">
+                            <span>Run PoC Module (Proof of Concept)</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="start-scan-btn">
+                        <i class="fas fa-play"></i> Start Scan
+                    </button>
+                </form>
+            </section>
+
+            <!-- Active Scan Progress -->
+            <section class="card" id="progress-section" style="display: none;">
+                <h2><i class="fas fa-spinner fa-spin"></i> Scan Progress</h2>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">0%</div>
+                </div>
+                <div class="progress-stages">
+                    <div class="stage" id="stage-crawling">
+                        <i class="fas fa-spider"></i> Crawling
+                    </div>
+                    <div class="stage" id="stage-port_scanning">
+                        <i class="fas fa-network-wired"></i> Port Scanning
+                    </div>
+                    <div class="stage" id="stage-passive_scanning">
+                        <i class="fas fa-search"></i> Passive Scanning
+                    </div>
+                    <div class="stage" id="stage-active_scanning">
+                        <i class="fas fa-bug"></i> Active Scanning
+                    </div>
+                    <div class="stage" id="stage-reporting">
+                        <i class="fas fa-file-alt"></i> Reporting
+                    </div>
+                </div>
+                <div class="progress-messages" id="progress-messages"></div>
+            </section>
+
+            <!-- Scan Results -->
+            <section class="card" id="results-section" style="display: none;">
+                <h2><i class="fas fa-chart-line"></i> Scan Results</h2>
+                <div id="results-content"></div>
+                <div class="action-buttons">
+                    <button class="btn btn-success" id="view-report-btn" style="display: none;">
+                        <i class="fas fa-file-alt"></i> View Full Report
+                    </button>
+                    <button class="btn btn-primary" id="get-remediation-btn" style="display: none;">
+                        <i class="fas fa-robot"></i> Get AI Remediation Report
+                    </button>
+                    <button class="btn btn-secondary" id="new-scan-btn">
+                        <i class="fas fa-plus"></i> New Scan
+                    </button>
+                </div>
+            </section>
+
+            <!-- Remediation Report -->
+            <section class="card" id="remediation-section" style="display: none;">
+                <h2><i class="fas fa-robot"></i> AI-Powered Remediation Report</h2>
+                <div id="remediation-loading" style="display: none;">
+                    <p class="loading"><i class="fas fa-spinner fa-spin"></i> Generating AI remediation suggestions...</p>
+                </div>
+                <div id="remediation-content"></div>
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-secondary" id="close-remediation-btn">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+            </section>
+
+            <!-- Previous Scans -->
+            <section class="card">
+                <h2><i class="fas fa-history"></i> Previous Scans</h2>
+                <div id="scans-list">
+                    <p class="loading">Loading scan history...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Penetration Testing Suite | Built for Security Research</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
+
