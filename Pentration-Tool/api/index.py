@@ -1,27 +1,36 @@
 """
 Vercel Serverless Function - WSGI Entry Point
+Vercel looks for a WSGI app named 'app'
 """
 import sys
 import os
 
-# Ensure the parent directory is in the path
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+# Add parent directory to Python path (where app.py is)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    # Import the Flask app
-    from app import app
-    
-    # Vercel looks for this app variable
-    application = app
+    # Import and export the Flask app from app.py
+    from app import app, socketio
+    # Vercel expects variable named 'app'
     
 except ImportError as e:
-    print(f"Error importing app: {e}")
-    from flask import Flask
-    application = Flask(__name__)
+    import traceback
+    # Fallback app in case of import error
+    from flask import Flask, jsonify
+    app = Flask(__name__)
     
-    @application.route('/')
+    @app.route('/')
     def error():
-        return f"Error: Could not import main app. {str(e)}", 500
+        return jsonify({
+            "error": f"Failed to import main app",
+            "details": str(e),
+            "traceback": traceback.format_exc()
+        }), 500
+    
+    @app.route('/api/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+    def catch_all(path):
+        return jsonify({
+            "error": "Failed to import main app",
+            "details": str(e)
+        }), 500
 
