@@ -1,15 +1,27 @@
 """
-Vercel WSGI entry point for the Flask application
+Vercel Serverless Function - WSGI Entry Point
 """
 import sys
 import os
 
-# Add parent directory to path to import the app
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Ensure the parent directory is in the path
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
-# Import the Flask app from the original app.py
-from app import app
+try:
+    # Import the Flask app
+    from app import app
+    
+    # Vercel looks for this app variable
+    application = app
+    
+except ImportError as e:
+    print(f"Error importing app: {e}")
+    from flask import Flask
+    application = Flask(__name__)
+    
+    @application.route('/')
+    def error():
+        return f"Error: Could not import main app. {str(e)}", 500
 
-# Export the app for Vercel
-# Vercel automatically looks for 'app' variable
-__all__ = ['app']
