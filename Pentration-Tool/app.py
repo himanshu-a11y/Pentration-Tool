@@ -573,14 +573,14 @@ def handle_disconnect():
     """Handle WebSocket disconnection."""
     log.info('Client disconnected')
 
+# Create necessary directories (for local development)
+os.makedirs('reports', exist_ok=True)
+os.makedirs('templates', exist_ok=True)
+os.makedirs('static', exist_ok=True)
+os.makedirs('static/css', exist_ok=True)
+os.makedirs('static/js', exist_ok=True)
+
 if __name__ == '__main__':
-    # Create necessary directories
-    os.makedirs('reports', exist_ok=True)
-    os.makedirs('templates', exist_ok=True)
-    os.makedirs('static', exist_ok=True)
-    os.makedirs('static/css', exist_ok=True)
-    os.makedirs('static/js', exist_ok=True)
-    
-    # Run the app
+    # Run the app (local development only)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
 
